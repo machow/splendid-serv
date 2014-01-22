@@ -1,0 +1,4 @@
+#empty directory
+*
+#except for .gitignore
+!.gitignore
