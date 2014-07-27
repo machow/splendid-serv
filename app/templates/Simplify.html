@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Simplify</title>
+	<link rel="stylesheet" href="../css/style.css">
+	<script type="text/javascript" src="/static/paper-full.js"></script>
+	<script type="text/javascript" src="/static/jquery-1.11.1.min.js"></script>
+	<script type="text/paperscript" canvas="canvas">
+
+		var path;
+    var group = new Group();
+
+		var textItem = new PointText({
+			content: 'Click and drag to draw a line.',
+			point: new Point(20, 30),
+			fillColor: 'black',
+		});
+
+		function onMouseDown(event) {
+      Undo.reset();
+			// If we produced a path before, deselect it:
+			if (path) {
+				path.selected = false;
+			}
+
+			// Create a new path and set its stroke color to black:
+			path = new Path({
+				segments: [event.point],
+				strokeColor: 'black',
+				// Select the path, so we can see its segment points:
+				fullySelected: false,
+        parent: group
+			});
+      console.log(event.point);
+      console.log(view.center);
+      console.log(view.size);
+
+		}
+
+		// While the user drags the mouse, points are added to the path
+		// at the position of the mouse:
+		function onMouseDrag(event) {
+			path.add(event.point);
+
+			// Update the content of the text item to show how many
+			// segments it has:
+			textItem.content = 'Segment count: ' + path.segments.length;
+		}
+
+		// When the mouse is released, we simplify the path:
+		function onMouseUp(event) {
+			var segmentCount = path.segments.length;
+
+			// When the mouse is released, simplify it:
+			path.simplify(10);
+
+			// Select the path, so we can see its segments:
+			path.fullySelected = false;
+
+			var newSegmentCount = path.segments.length;
+			var difference = segmentCount - newSegmentCount;
+			var percentage = 100 - Math.round(newSegmentCount / segmentCount * 100);
+			textItem.content = difference + ' of the ' + segmentCount + ' segments were removed. Saving ' + percentage + '%';
+		}
+
+    function onKeyDown(event) {
+      console.log(event)
+      if (event.key == 'down') group.rotate(10);
+      if (event.key == 'up')   group.rotate(-10);
+      if (event.key == 'left')  Undo.undo();
+      if (event.key == 'right') Undo.redo();
+      if (event.key == '+') resizeCanvas(1.1);
+      if (event.key == '-') resizeCanvas(.9);
+      if (event.key == '1') dst_group.visible = (dst_group.visible + 1) % 2;  // toggle visibility
+      if (event.key == '9') toggleGrid(10);
+      if (event.key == '0') toggleGrid(0);
+      if (event.key == 'n') {
+          $.getJSON('contours', function(data){
+            dst_group.removeChildren();
+            drawJSON(data['dst'], dst_group);
+            dst_group.rotate(90)
+            });
+      }
+      if (event.key == 's') {
+        $.ajax({
+          type: 'POST',
+          // Provide correct Content-Type, so that Flask will know how to process it.
+          contentType: 'application/json',
+          // Encode your data as JSON.
+          data: group.exportJSON(),
+          // This is the type of data you're expecting back from the server.
+          dataType: 'json',
+          url: 'submit',
+          success: function (e) {
+              console.log(e);
+          }
+        });
+      }
+      //console.log(tools)
+      //console.log(tool)
+      //console.log(group)
+    }
+
+    // Object for undoing pen strokes
+    // makes most recent stroke visible stroke invisible, and vice-versa
+    // reset removes paths from the canvas and group object
+    // once initialized, the current stroke should be invisible (except when redid final stroke)
+    var Undo = {
+      current: 0,         // most recent undone item
+      reset: function(){
+        // remove all undone items from group
+        if (this.current) {
+          group.removeChildren(this.current.index, group.children.length -1);
+          this.current = 0;
+        }
+      },
+      redo: function(){
+        // makes most recent undone item visible again, advance current if possible
+        if (this.current) {
+          this.current.visible = true;
+          if (this.current.nextSibling) this.current = this.current.nextSibling;
+          }
+      },
+      undo:  function(){
+        if (!this.current) this.current = group.lastChild;   // initializing
+        else if (this.current.visible == true)  ;            // last item is visible
+        else if (!this.current.previousSibling) ;            // no further back
+        else this.current = this.current.previousSibling;    // further back
+        this.current.visible = false;
+
+      }
+    };
+
+    // DRAW IMAGE
+    //
+    function drawJSON(linelist, group){
+      for (var ii = 0; ii < linelist.length; ii++) {
+        new Path({segments: linelist[ii], strokeColor:'grey', parent: group});
+      }
+    }
+    var dst_group = new Group();
+
+    // RESIZE CANVAS
+    //
+    function resizeCanvas(scale)
+    {
+      canvas.width = canvas.width * scale;
+      canvas.height = canvas.height * scale;
+
+      //view.viewSize = new Size(canvas.width, canvas.height);
+      view.zoom = view.zoom * scale;
+      view.center = view.size / 2;
+      view.draw();
+    }
+    
+    //  DRAW GRID OVER IMAGE
+    var gridy_group = new Group();
+    var gridx_group = new Group();
+    function toggleGrid(nsections, orient){
+      gridy_group.removeChildren();
+      gridx_group.removeChildren();
+      var interval = view.size.height / nsections;
+      var bounds = view.bounds;
+      for (var ii = 1; ii * interval < bounds.bottom; ii++){
+        var p = [[bounds.left, ii*interval], [bounds.right, ii*interval]];
+        new Path({segments: p, parent: gridy_group, strokeColor: 'lightgrey'});
+      }
+      gridy_group.copyTo(gridx_group);
+      gridx_group.rotate(90)
+    //  
+    }
+
+	</script>
+</head>
+<body>
+	<canvas id="canvas" width=1000, height=1000></canvas>
+</body>
+</html>

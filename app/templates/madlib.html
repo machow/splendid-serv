@@ -1,0 +1,13 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<form target="" method="POST" name="madlib">
+
+{% for blank in form.blank %}
+  <p>{{ blank(size=60) }}</p>
+{% endfor %}
+
+<input type="submit" value="submit">
+
+{% endblock %}
