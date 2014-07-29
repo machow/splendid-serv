@@ -3,14 +3,23 @@ ROLE_USER = 0
 ROLE_ADMIN = 1
 
 from datetime import datetime
+association = db.Table('association',
+        db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+        db.Column('game_id', db.Integer, db.ForeignKey('game.id'))
+        )
+
 class User(db.Model):
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key = True)
     nickname = db.Column(db.String(64), index=True, unique = True)
     email = db.Column(db.String(120), index=True, unique = True)
     role = db.Column(db.SmallInteger, default = ROLE_USER)
     cdate       = db.Column(db.DateTime, default=datetime.utcnow)
 
-    games = db.Column(db.Text)
+    playing = db.relationship('Game', 
+            secondary = association, 
+            backref = db.backref('players', lazy = 'dynamic'), 
+            lazy = 'dynamic')
 
     @staticmethod
     def make_unique_nickname(nickname):
@@ -20,6 +29,10 @@ class User(db.Model):
             new_nickname = nickname + str(version)
             version += 1
         return new_nickname
+
+    def add_game(self, game):
+        self.playing.append(game)
+        return self
 
     def is_authenticated(self):
         return True
@@ -34,4 +47,14 @@ class User(db.Model):
         return unicode(self.id)
 
     def __repr__(self):
-        return "<Entry %s, Time %s>"%(self.id, self.reg_date)
+        return "<Entry %s, Time %s>"%(self.id, self.cdate)
+
+class Game(db.Model):
+    __tablename__ = 'game'
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(64), index=True, unique = True)
+    is_active = db.Column(db.Boolean, default=True)
+
+    def add_user(self, user):
+        self.players.append(user)
+        return self

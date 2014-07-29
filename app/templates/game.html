@@ -3,6 +3,11 @@
 {% block content %}
 <p>Hello, {{user.nickname}}</p>
 
+{% for entry in CRNT_GAMES %}
+  <br>
+  {{ entry }}
+{% endfor %}
+<span id="game_name">{{game_name}}</span>
 <input type="text" id="line">
 
 <div id="splendid">
@@ -10,20 +15,22 @@
 
 <script type=text/javascript>
     $(document).ready(function(){
+        var game_name = $('#game_name').html();
         $("#line").on('keypress', function(event){
             if ( event.which == 13 ) {
                 event.preventDefault();
                 var form = $(this);
-                game = sendCommand(form.val());
+                game = sendCommand(form.val(), game_name);
 
                 console.log(form.val());
             }
         });
     });
 
-    function sendCommand(cmd){
+    function sendCommand(cmd, game_name){
         $.ajax('/submit', 
-            {data: JSON.stringify(cmd), 
+            {data: JSON.stringify({commands: cmd,
+                    game: game_name}), 
             type:'POST', 
             dataType:'json', 
             contentType: 'application/json',
