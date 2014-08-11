@@ -5,7 +5,7 @@ ROLE_ADMIN = 1
 from datetime import datetime
 association = db.Table('association',
         db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-        db.Column('game_id', db.Integer, db.ForeignKey('game.id'))
+        db.Column('match_id', db.Integer, db.ForeignKey('match.id'))
         )
 
 class User(db.Model):
@@ -16,7 +16,7 @@ class User(db.Model):
     role = db.Column(db.SmallInteger, default = ROLE_USER)
     cdate       = db.Column(db.DateTime, default=datetime.utcnow)
 
-    playing = db.relationship('Game', 
+    playing = db.relationship('Match', 
             secondary = association, 
             backref = db.backref('players', lazy = 'dynamic'), 
             lazy = 'dynamic')
@@ -29,10 +29,6 @@ class User(db.Model):
             new_nickname = nickname + str(version)
             version += 1
         return new_nickname
-
-    def add_game(self, game):
-        self.playing.append(game)
-        return self
 
     def is_authenticated(self):
         return True
@@ -49,11 +45,13 @@ class User(db.Model):
     def __repr__(self):
         return "<Entry %s, Time %s>"%(self.id, self.cdate)
 
-class Game(db.Model):
-    __tablename__ = 'game'
+class Match(db.Model):
+    __tablename__ = 'match'
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64), index=True, unique = True)
-    is_active = db.Column(db.Boolean, default=True)
+    is_active = db.Column(db.Boolean, unique=False, default=True)
+    creator = db.Column(db.Integer, db.ForeignKey('user.id'))
+    summary = db.Column(db.Text)
 
     def add_user(self, user):
         self.players.append(user)

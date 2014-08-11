@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<script src="/_/animate.js"></script>
+<link rel='stylesheet' href='/_/templatestyle.css' />
+<div id='top-options'>
+    <p>Hello, {{user.nickname}}</p>
+    <span id="game_name">{{game_name}}</span>
+</div>
+
+<div id="splendid">
+    <!-- game header --!>
+    <div id="game-header">
+        <div class='float-left'>
+        <div id="move-selected">
+            <ul class="p-gems p-selected">
+            </ul>
+            <div id="gem-source"><span></span></div>
+        </div>
+        <div id="move-options">
+            <span id="do-draw" class="move">Draw</span>
+            <span id="do-buy" class="move">Buy</span>
+            <span id="do-reserve" class="move">Reserve</span>
+            <span id="do-noble" class="move">Noble</span>
+        </div>
+        </div>
+        <div id="line-container"><input type="text" id="line"></div>
+    </div>
+    <!-- / --!>
+    <div id="player-wrapper"></div>
+    <div id="board-wrapper"></div>
+    <div id="bank-wrapper"></div>
+</div>
+
+
+<script type=text/javascript>
+//var json_str = '{"winner": [], "summary": "\\n\\nTURN: danjchow     | MOVE: [\'do_draw\', \'do_reserve\', \'do_buy\']\\n\\n==== PLAYERS ====\\nPlayer: danjchow (5) | land bonus: Counter({\'B\': 8, \'r\': 1}) | gems: 03r09B0b00W00g\\nPlayer: plasticandglass (0) | land bonus: Counter() | gems: 20r20B20b20W20g\\n\\n==== BANK =====\\n\\n5A6B5W5g2r4b\\n\\n==== LANDS ====\\n[32]: r3BW | +r | pv: 0            [31]: 2B2Wg | +r | pv: 0           [30]: Bb2Wg | +r | pv: 0           [28]: 2r2W | +r | pv: 0       \\n[70]: 3r5g | +B | pv: 2            [69]: 2B3W3g | +B | pv: 1          [68]: 2rb4g | +B | pv: 2           [67]: 2b3W2g | +B | pv: 1     \\n[90]: 3r3b3W5g | +B | pv: 3        [89]: 6r3B3g | +B | pv: 4          [88]: 7r3B | +B | pv: 5            [87]: 7r | +B | pv: 4         \\n\\n==== NOBLES ====\\n[10]: 4b4W | + | pv: 3             [9]: 3r3B3g | + | pv: 3            [8]: 3b3W3g | + | pv: 3       ", "crnt_player": "danjchow", "players": {"danjchow": {"gems": {"r": 103, "B": 109, "b": 101, "W": 100, "g": 100}, "land_bonus": {"r": 1, "B": 8}, "lands": [{"owner": "danjchow", "pv": 0, "cost": {"r": 3, "B": 1, "g": 1}, "type": "B", "id": 40}, {"owner": "danjchow", "pv": 0, "cost": {"W": 2, "g": 2}, "type": "B", "id": 36}, {"owner": "danjchow", "pv": 1, "cost": {"b": 4}, "type": "B", "id": 37}, {"owner": "danjchow", "pv": 0, "cost": {"r": 1, "b": 2, "W": 1, "g": 1}, "type": "B", "id": 38}, {"owner": "danjchow", "pv": 0, "cost": {"r": 1, "b": 2, "W": 2}, "type": "B", "id": 39}, {"owner": "danjchow", "pv": 0, "cost": {"r": 1, "g": 2}, "type": "B", "id": 33}, {"owner": "danjchow", "pv": 0, "cost": {"g": 3}, "type": "B", "id": 34}, {"owner": "danjchow", "pv": 0, "cost": {"r": 1, "b": 1, "W": 1, "g": 1}, "type": "B", "id": 35}, {"owner": "danjchow", "pv": 1, "cost": {"W": 4}, "type": "r", "id": 29}], "name": "danjchow", "points": 5, "nobles": [{"owner": null, "pv": 3, "cost": {"B": 4, "W": 4}, "type": "", "id": 7}], "reserve": []}, "plasticandglass": {"gems": {"r": 20, "B": 20, "b": 20, "W": 20, "g": 20}, "land_bonus": {}, "lands": [], "name": "plasticandglass", "points": 0, "nobles": [], "reserve": []}}, "nobles": [{"owner": null, "pv": 3, "cost": {"b": 4, "W": 4}, "type": "", "id": 10}, {"owner": null, "pv": 3, "cost": {"r": 3, "B": 3, "g": 3}, "type": "", "id": 9}, {"owner": null, "pv": 3, "cost": {"b": 3, "W": 3, "g": 3}, "type": "", "id": 8}], "crnt_move": ["do_draw", "do_reserve", "do_buy"], "bank": {"A": 5, "B": 6, "W": 15, "g": 15, "r": 12, "b": 14}, "decks": [{"tier": 1, "table": [{"owner": null, "pv": 0, "cost": {"r": 1, "B": 3, "W": 1}, "type": "r", "id": 32}, {"owner": null, "pv": 0, "cost": {"B": 2, "W": 2, "g": 1}, "type": "r", "id": 31}, {"owner": null, "pv": 0, "cost": {"B": 1, "b": 1, "W": 2, "g": 1}, "type": "r", "id": 30}, {"owner": null, "pv": 0, "cost": {"r": 2, "W": 2}, "type": "r", "id": 28}], "elsewhere": [{"owner": "danjchow", "pv": 0, "cost": {"r": 3, "B": 1, "g": 1}, "type": "B", "id": 40}, {"owner": "danjchow", "pv": 0, "cost": {"W": 2, "g": 2}, "type": "B", "id": 36}, {"owner": "danjchow", "pv": 1, "cost": {"b": 4}, "type": "B", "id": 37}, {"owner": "danjchow", "pv": 0, "cost": {"r": 1, "b": 2, "W": 1, "g": 1}, "type": "B", "id": 38}, {"owner": "danjchow", "pv": 0, "cost": {"r": 1, "b": 2, "W": 2}, "type": "B", "id": 39}, {"owner": "danjchow", "pv": 0, "cost": {"r": 1, "g": 2}, "type": "B", "id": 33}, {"owner": "danjchow", "pv": 0, "cost": {"g": 3}, "type": "B", "id": 34}, {"owner": "danjchow", "pv": 0, "cost": {"r": 1, "b": 1, "W": 1, "g": 1}, "type": "B", "id": 35}, {"owner": "danjchow", "pv": 1, "cost": {"W": 4}, "type": "r", "id": 29}]}, {"tier": 2, "table": [{"owner": null, "pv": 2, "cost": {"r": 3, "g": 5}, "type": "B", "id": 70}, {"owner": null, "pv": 1, "cost": {"B": 2, "W": 3, "g": 3}, "type": "B", "id": 69}, {"owner": null, "pv": 2, "cost": {"r": 2, "b": 1, "g": 4}, "type": "B", "id": 68}, {"owner": null, "pv": 1, "cost": {"b": 2, "W": 3, "g": 2}, "type": "B", "id": 67}], "elsewhere": []}, {"tier": 3, "table": [{"owner": null, "pv": 3, "cost": {"r": 3, "b": 3, "W": 3, "g": 5}, "type": "B", "id": 90}, {"owner": null, "pv": 4, "cost": {"r": 6, "B": 3, "g": 3}, "type": "B", "id": 89}, {"owner": null, "pv": 5, "cost": {"r": 7, "B": 3}, "type": "B", "id": 88}, {"owner": null, "pv": 4, "cost": {"r": 7}, "type": "B", "id": 87}], "elsewhere": []}]}'
+var json_str = '{"winner": [], "summary": "\\n\\nTURN: player1     | MOVE: [\'do_draw\', \'do_reserve\', \'do_buy\']\\n\\n==== PLAYERS ====\\nPlayer: player1 (1) | land bonus: Counter({\'W\': 8, \'B\': 4}) | gems: 0B9r8b8W0g\\nPlayer: player2 (0) | land bonus: Counter() | gems: A2r2B2W\\n\\n==== BANK =====\\n\\n4A3B5g4r5W7b\\n\\n==== LANDS ====\\n[38]: r2bgW | +B | pv: 0           [37]: 4b | +B | pv: 1              [36]: 2g2W | +B | pv: 0            [35]: rbgW | +B | pv: 0       \\n[70]: 3r5g | +B | pv: 2            [69]: 2B3g3W | +B | pv: 1          [68]: 2rb4g | +B | pv: 2           [67]: 2b2g3W | +B | pv: 1     \\n[89]: 3B6r3g | +B | pv: 4          [88]: 3B7r | +B | pv: 5            [87]: 7r | +B | pv: 4              [86]: 3B5b3g3W | +r | pv: 3   \\n\\n==== NOBLES ====\\n[10]: 4b4W | + | pv: 3             [9]: 3B3r3g | + | pv: 3            [8]: 3b3g3W | + | pv: 3            [7]: 4B4W | + | pv: 3         ", "crnt_player": "player1", "players": {"player2": {"gems": {"A": 1, "r": 2, "B": 2, "W": 2}, "land_bonus": {}, "lands": [], "name": "player2", "points": 0, "nobles": [], "reserve": [{"pv": 3, "tier": 3, "cost": {"r": 3, "b": 3, "g": 5, "W": 3}, "owner": null, "type": "B", "id": 90}]}, "player1": {"gems": {"B": 10, "r": 9, "b": 8, "W": 8, "g": 10, "A":1}, "land_bonus": {"B": 4, "W": 8}, "lands": [{"pv": 0, "tier": 1, "cost": {"B": 1, "r": 3, "g": 1}, "owner": "player1", "type": "B", "id": 40}, {"pv": 0, "tier": 1, "cost": {"r": 1, "b": 2, "W": 2}, "owner": "player1", "type": "B", "id": 39}, {"pv": 0, "tier": 1, "cost": {"b": 3}, "owner": null, "type": "W", "id": 1}, {"pv": 0, "tier": 1, "cost": {"B": 1, "r": 2}, "owner": null, "type": "W", "id": 2}, {"pv": 0, "tier": 1, "cost": {"B": 1, "r": 1, "b": 1, "g": 1}, "owner": null, "type": "W", "id": 3}, {"pv": 0, "tier": 1, "cost": {"B": 2, "b": 2}, "owner": null, "type": "W", "id": 4}, {"pv": 1, "tier": 1, "cost": {"g": 4}, "owner": null, "type": "W", "id": 5}, {"pv": 0, "tier": 1, "cost": {"B": 1, "r": 1, "b": 1, "g": 2}, "owner": null, "type": "W", "id": 6}, {"pv": 0, "tier": 1, "cost": {"B": 1, "b": 2, "g": 2}, "owner": null, "type": "W", "id": 7}, {"pv": 0, "tier": 1, "cost": {"B": 1, "b": 1, "W": 3}, "owner": null, "type": "W", "id": 8}, {"pv": 0, "tier": 1, "cost": {"r": 1, "g": 2}, "owner": null, "type": "B", "id": 33}, {"pv": 0, "tier": 1, "cost": {"g": 3}, "owner": null, "type": "B", "id": 34}], "name": "player1", "points": 1, "nobles": [], "reserve": []}}, "nobles": [{"pv": 3, "tier": 1, "cost": {"b": 4, "W": 4}, "owner": null, "type": "", "id": 10}, {"pv": 3, "tier": 1, "cost": {"B": 3, "r": 3, "g": 3}, "owner": null, "type": "", "id": 9}, {"pv": 3, "tier": 1, "cost": {"b": 3, "g": 3, "W": 3}, "owner": null, "type": "", "id": 8}, {"pv": 3, "tier": 1, "cost": {"B": 4, "W": 4}, "owner": null, "type": "", "id": 7}], "crnt_move": ["do_draw", "do_reserve", "do_buy"], "bank": {"A": 4, "B": 3, "g": 5, "r": 4, "W": 5, "b": 7}, "decks": [{"tier": 1, "table": [{"pv": 0, "tier": 1, "cost": {"r": 1, "b": 2, "g": 1, "W": 1}, "owner": null, "type": "B", "id": 38}, {"pv": 1, "tier": 1, "cost": {"b": 4}, "owner": null, "type": "B", "id": 37}, {"pv": 0, "tier": 1, "cost": {"g": 2, "W": 2}, "owner": null, "type": "B", "id": 36}, {"pv": 0, "tier": 1, "cost": {"r": 1, "b": 1, "g": 1, "W": 1}, "owner": null, "type": "B", "id": 35}], "elsewhere": [{"pv": 0, "tier": 1, "cost": {"B": 1, "r": 3, "g": 1}, "owner": "player1", "type": "B", "id": 40}, {"pv": 0, "tier": 1, "cost": {"r": 1, "b": 2, "W": 2}, "owner": "player1", "type": "B", "id": 39}]}, {"tier": 2, "table": [{"pv": 2, "tier": 2, "cost": {"r": 3, "g": 5}, "owner": null, "type": "B", "id": 70}, {"pv": 1, "tier": 2, "cost": {"B": 2, "g": 3, "W": 3}, "owner": null, "type": "B", "id": 69}, {"pv": 2, "tier": 2, "cost": {"r": 2, "b": 1, "g": 4}, "owner": null, "type": "B", "id": 68}, {"pv": 1, "tier": 2, "cost": {"b": 2, "g": 2, "W": 3}, "owner": null, "type": "B", "id": 67}], "elsewhere": []}, {"tier": 3, "table": [{"pv": 4, "tier": 3, "cost": {"B": 3, "r": 6, "g": 3}, "owner": null, "type": "B", "id": 89}, {"pv": 5, "tier": 3, "cost": {"B": 3, "r": 7}, "owner": null, "type": "B", "id": 88}, {"pv": 4, "tier": 3, "cost": {"r": 7}, "owner": null, "type": "B", "id": 87}, {"pv": 3, "tier": 3, "cost": {"B": 3, "b": 5, "g": 3, "W": 3}, "owner": null, "type": "r", "id": 86}], "elsewhere": [{"pv": 3, "tier": 3, "cost": {"r": 3, "b": 3, "g": 5, "W": 3}, "owner": null, "type": "B", "id": 90}]}]}'
+</script>
+<script type=text/javascript src='/_/splendid.js'></script>
+<script type=text/javascript>
+    $(document).ready(function(){
+        var game_name = $('#game_name').html();
+        $("#line").on('keypress', function(event){
+            if ( event.which == 13 ) {
+                event.preventDefault();
+                var form = $(this);
+                game = sendCommand(form.val(), game_name);
+
+                console.log(form.val());
+            }
+        });
+
+        $(document).on('click', '.move.available', function(){
+            cmd = String(this.id).replace('do-', "");
+            var cmd_str = Command.genCommand(cmd);
+            console.log("sending following command:");
+            console.log(cmd_str);
+            $('#line').val(cmd_str);
+            // sendCommand(cmd_str, game_name);
+        });
+    });
+
+</script>
+
+{% endblock %}
+

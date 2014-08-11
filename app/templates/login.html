@@ -14,6 +14,8 @@ function set_openid(openid, pr)
 }
 </script>
 
+<h1>Please Login First</h1>
+
 <form action="" method="post" name="login">
   {{form.hidden_tag()}}
   <p>Openid: {{form.openid(size=80)}}</p>
@@ -21,6 +23,7 @@ function set_openid(openid, pr)
   |{% for pr in providers%}
   <a href="javascript:set_openid('{{pr.url}}', '{{pr.name}}');">{{pr.name}}</a> |
   {% endfor %}
+  <p>nickname: {{form.nickname()}}</p>
 
   <p>Remember Me: {{form.remember_me()}}</p>
   <input type="submit" value="Blast off!">

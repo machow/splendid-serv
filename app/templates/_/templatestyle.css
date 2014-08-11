@@ -1,0 +1,621 @@
+*{
+	margin:0;
+	/* background-color:black; */
+	padding: 0%;
+	/* border-radius: 5%; */
+}
+
+header{
+	display:none;
+}
+
+#top-options{
+	position: relative;
+	top:0%;
+	left:0%;
+	height:	20px;
+	width:100%;
+	background-color:grey;
+		
+	overflow-y: scroll;
+}
+
+body{
+	height:100vh;
+	width:100vw;
+	position:relative;
+	overflow:hidden;
+	animation:spin 5s infinite;
+	/*-webkit-animation:spin linear 5s infinite;*/
+}
+
+@keyframes spin{
+	0% {
+		transform: rotate(0deg);
+		}
+	100%% {
+		transform: rotate(360deg);
+		}
+	
+}
+
+@-webkit-keyframes spin{
+	
+	0%{
+		-webkit-transform: rotate(0deg);
+		}
+	100% {
+		-webkit-transform: rotate(360deg);
+		}
+	
+}
+
+
+.player{
+	background-color: rgba(0, 161, 255, 0.63);
+	max-width: 90%;
+	margin: auto;
+	margin-bottom: 6%;
+	/* padding: 10px; */
+	box-sizing: border-box;
+	box-shadow: 2px 2px 10px rgba(0,0,0,.75);
+	display:  block;
+	/* float: left; */
+	
+	/* clear: both; */
+	position: relative;
+	border-radius: 10%;
+	border: 1px solid white;
+}
+
+.li-coloring h3{
+	display: block;
+	/* background-color: rgba(255, 255, 255, 0.71); */
+	padding: 0.5vw;
+	margin:0;
+	list-style-type: none;
+	border-radius:;
+}
+
+.li-coloring {
+	font-size: 1vw;
+	border-radius: inherit;
+	/* padding: 0%; */
+}
+
+ul.li-coloring li:nth-of-type(2n) {
+	background-color:white;
+}
+
+
+.li-coloring li{
+	padding: 0 5%;
+	
+	
+}
+
+
+.li-coloring li:hover{
+	background-color:grey;
+}
+
+
+.p-gems{
+	display:block;
+	list-style-type:none;
+	padding:0;
+	text-align:justify;
+	position: relative;
+	text-justify:distribute-all-lines;
+}
+
+.p-gems li{
+	border:1px solid black;
+	position: relative;
+	display:inline-block;
+	margin: 0.5vw 0.1vw;
+	/* min-width: 22px; */
+	/* min-height: 22px; */
+	box-sizing: border-box;
+	height: 2.5vw;
+	width: 2.5vw;
+	font-size: 1.5vw;
+	text-align: center;
+	padding:0;
+	box-sizing: border-box;
+}
+
+.vertical-center{
+	display: block;
+	position:absolute;
+	/* margin: auto; */
+	text-align:center;
+	
+	top: 1;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	/* vertical-align: middle; */
+}
+
+.p-gems li:hover{
+	background-color:white;
+}
+
+ul.p-gems li.gem-BB, .b-gems .gem-BB{
+	background: url('img/gem_BB.png') no-repeat center;
+	background-size: 100% auto;
+	color: white;
+	background-color: white;
+}
+
+ul.p-gems li.gem-A, .b-gems .gem-A{
+	background: url('img/gem_A.png') no-repeat center;
+	background-size: auto 100%;
+	color: white;
+	background-color: black;
+}
+
+ul.p-gems li.gem-b, .b-gems .gem-b{
+	background: url('img/gem_b.png') no-repeat center;
+	background-size: 100% auto;
+	color: white;
+	background-color: rgb(255, 184, 0);
+}
+
+ul.p-gems li.gem-w, .b-gems .gem-w{
+	background: url('img/gem_w.png') no-repeat center;
+	background-size: 100% auto;
+	color: black;
+	background-color: rgba(128, 128, 128, 0.47);
+}
+
+ul.p-gems li.gem-r, .b-gems .gem-r{
+	background: url('img/gem_r.png') no-repeat center;
+	background-size: 100% auto;
+	color: white;
+	background-color: rgb(0, 255, 235);
+}
+
+ul.p-gems li.gem-g, .b-gems .gem-g{
+	background: url('img/gem_g.png') no-repeat center;
+	background-size: 100% auto;
+	color: white;
+	background-color: rgb(0, 255, 10);
+}
+
+li.gems-container, li.lands-container{
+	padding:0px;
+}
+
+
+.p-lands{
+	height: 83vw;
+	width: 70vw;
+	overflow: scroll;
+	display:none;
+	border: 2px solid black;
+	background: url('img/wood-grain-background.jpg') repeat;
+	position: fixed;
+	top: 10%;
+	/* bottom: 10%; */
+	
+	left: 20%;
+	/* left: 10%; */
+	z-index: 999;
+	resize: both;
+}
+
+/*.lands-container:hover>.p-lands{
+	display:block;
+}*/
+
+.c-land, lands, p-lands{
+	width: 20%;
+	height: 20vw;
+	/*min-width: 100px;*/
+	font-size: 1.9vw;
+	box-shadow:5px 5px 10px rgba(0,0,0,.5);
+	text-shadow:2px 2px 5px rgba(0,0,0,.3);
+	display:inline-block;
+	margin: 3% 0 3% 3.5%;
+	position:relative;
+	box-sizing:border-box;
+	border:1px solid black;
+}
+
+/*
+   Michael added background image on Aug 8th, to just see--just to see 
+   the cards in all their glory. I guess it might be easier to do the
+   backgrounds in jquery
+*/
+
+.type-BB/*.tier-1*/{
+  /* parts I added */
+  background-image: url("img/land_bb_1.png");
+  background-size: auto 100%;
+}
+
+.type-r/*.tier-1*/{
+  /* parts I added */
+  background-image: url("img/land_r_1.png");
+  background-size: auto 100%;
+}
+
+.type-w/*.tier-1*/{
+  /* parts I added */
+  background-image: url("img/land_w_1.png");
+  background-size: auto 100%;
+}
+
+.type-b/*.tier-1*/{
+  /* parts I added */
+  background-image: url("img/land_b_1.png");
+  background-size: auto 100%;
+}
+
+.type-g/*.tier-1*/{
+  /* parts I added */
+  background-image: url("img/land_g_1.png");
+  background-size: auto 100%;
+}
+
+/* Added header, footer, and body classes to cards */
+.c-header, .c-footer{
+  height: 25%;
+  background-color: rgba(200,200,200,.5);
+}
+
+.c-body{
+  height: 50%;
+}
+
+/* No more ninja edits below :) */
+
+#board{
+	/* float:right; */
+	display:inline-block;
+	box-sizing:border-box;
+	width: 100%;
+	position:relative;
+	height: 100%;
+	border: 3px solid black;
+	overflow-y: scroll;
+}
+
+.nobles {
+	position:absolute;
+	background-color:grey;
+	bottom: 0;
+	height: 10%;
+	width:	100%;
+	
+}
+
+#splendid{
+	display: block;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	/* margin: 1vw 1vw 0 1vw; */
+	align-items:;
+}
+
+header{
+	display:none;
+}
+#game-header{
+    width: 100%;
+	
+	
+    height: 10%;
+    background: rgb(255, 250, 187);
+    /* top: 10px; */
+    left: 0;
+    position: absolute;
+}
+
+#player-wrapper{
+	width: 20%;
+	height: 87%;
+	overflow: overlay;
+	top: 10%;
+	left: 0;	
+	position: absolute;
+	background-color: black;
+	padding: 1% 0;
+	box-sizing: border-box;
+}
+
+#board-wrapper{
+	display:inline-block;
+	width: 64%;
+	overflow:auto;
+	position: absolute;
+	height: 87%;
+	
+	top: 10%;
+	left: 21%;
+}
+
+#button{
+	position: absolute;
+	top:0;
+	right:0;
+	height: 5%;
+	width: 5%;
+	display: inherit;
+	background-color: red;
+	color: white;
+	font-weight:bold;
+	font-size: 1.7em;
+	border:1px solid black;
+	text-align:center;
+	box-sizing:border-box;
+	/* padding: 0 0 0%; */
+}
+
+#button:hover{
+background-color:rgb(255,100,100);
+transform: translate(3%, 3%);
+}
+
+
+#bank-wrapper{
+	display: block;
+	width: 14%;
+	overflow:hidden;
+	position: absolute;
+	top: 10%;
+	left: 86%;
+	height: 87%;
+	background-color: rgba(103, 182, 255, 0.86);
+	border-radius: 10px;
+	border: 2px solid rgba(255, 255, 255, 0.54);
+	box-sizing: border-box;
+}
+
+#bank-gems{
+	height: 100%;
+	/* background-color: rgba(255, 255, 255, 0.8); */
+	position:relative;
+	
+}
+
+.b-gems{
+    height: 100vh;
+	
+    /* background: rgb(237, 226, 100); */
+    position: relative;
+    padding: 5%;
+}
+
+.b-gems li{
+    height: 8vw;
+	
+    /* padding: 48%; */
+    width: 8vw;
+    /* padding: 12%; */
+    max-height: 15%;
+    max-width: 100%;
+    display: block;
+    position: relative;
+    background-color: rgba(61, 255, 0, 1);
+    border-radius: 100%;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.46);
+    outline: 3px black;
+    margin: 5% auto;
+}
+
+.gem-placeholder{
+	
+	
+}
+
+
+/* below are the classes for what will be the buttons for submitting actions
+ * they can be found in the game-header div
+*/
+.move{
+  color: grey;
+}
+
+.move.available{
+  color: black;
+}
+
+/* IMPLEMENTED SELECTED CLASS FOR SHOWING WHICH LANDCARD HAS BEEN CHOSEN
+ * BELOW IS COLOR TO SHOW THE NEW IMPLEMENTATION, BUT DEFINITELY TWEAK
+ * TO BE PRETTY
+*/
+.selected{
+  border-color:blue;
+}
+
+.float-left{
+  float: left;
+}
+
+#line-container{
+  float: right;
+}
+
+.rainbow-underlay{
+	width:100vw;
+	height: 100vh;
+	position: relative;
+	z-index:-999;
+}
+
+.animate-background{
+	position: relative;
+	z-index:-999;
+}
+
+
+.board-back-1{
+	background-color: red;
+	height:17vh;
+	width: 100vw;
+	top: 0;
+	left: 0;
+	-webkit-animation: color-shift-red 15s infinite; /* Chrome, Safari, Opera */
+    animation: color-shift-red 15s infinite;
+
+	opacity: .5;
+}
+
+.board-back-2{
+	background-color: orange;
+	height:17vh;
+	width: 100vw;
+	top: 17vh;
+	left: 0;
+	-webkit-animation: color-shift-orange 15s infinite; /* Chrome, Safari, Opera */
+    animation: color-shift-orange 15s infinite;
+
+	opacity: .5;
+}
+
+.board-back-3{
+	background-color: yellow;
+	height:17vh;
+	width: 100vw;
+	top: 34vh;
+	left: 0;
+	-webkit-animation: color-shift-yellow 15s infinite; /* Chrome, Safari, Opera */
+    animation: color-shift-yellow 15s infinite;
+
+	opacity: .5;
+}
+	
+.board-back-4{
+	background-color: green;
+	height:17vh;
+	width: 100vw;
+	top: 51vh;
+	left: 0;
+	-webkit-animation: color-shift-green 15s infinite; /* Chrome, Safari, Opera */
+    
+	opacity: .5;
+	animation: color-shift-green 15s infinite;
+
+}
+
+.board-back-5{
+	background-color: blue;
+	height:17vh;
+	width: 100vw;
+	top: 68vh;
+	left: 0;
+	-webkit-animation: color-shift-blue 15s infinite; /* Chrome, Safari, Opera */
+    animation: color-shift-blue 15s infinite;
+
+	opacity: .5;
+}
+
+.board-back-6{
+	background-color: purple;
+	height:17vh;
+	width: 100vw;
+	top: 85vh;
+	left: 0;
+	opacity: .5;
+	-webkit-animation: color-shift-purple 15s infinite; /* Chrome, Safari, Opera */
+    animation: color-shift-purple 15s infinite;
+
+	
+}
+
+.board-back-7{
+	background:url(img/white-tiger.jpg) no-repeat center center;
+	background-size:auto 120%;
+	width: 100vw;
+	height: 100vh;
+	z-index:-1000;
+	position:fixed;
+}
+
+@keyframes color-shift-red {
+    0%, 100% {background-color:red;}
+	25% {background-color: yellow;}
+	75% {background-color: blue;}
+}
+
+@-webkit-keyframes color-shift-red { /* Safari and Chrome */ 
+    0%, 100% {background-color:red;}
+	25% {background-color: yellow;}
+	75% {background-color: blue;}
+}
+
+
+
+@keyframes color-shift-orange {
+    0%, 100% {background-color:orange;}
+	25% {background-color: green;}
+	75% {background-color: purple;}
+}
+
+@-webkit-keyframes color-shift-orange { /* Safari and Chrome */ 
+    0%, 100% {background-color:orange;}
+	25% {background-color: green;}
+	75% {background-color: purple;}
+}
+
+
+
+@keyframes color-shift-yellow {
+    0%, 100% {background-color:yellow;}
+	25% {background-color: blue;}
+	75% {background-color: red;}
+}
+
+@-webkit-keyframes color-shift-yellow { /* Safari and Chrome */ 
+   0%, 100% {background-color:yellow;}
+	25% {background-color: blue;}
+	75% {background-color: red;}
+}
+
+
+
+@keyframes color-shift-green {
+    0%, 100% {background-color:green;}
+	25% {background-color: purple;}
+	75% {background-color: orange;}
+}
+
+@-webkit-keyframes color-shift-green { /* Safari and Chrome */ 
+     0%, 100% {background-color:green;}
+	25% {background-color: purple;}
+	75% {background-color: orange;}
+}
+
+
+
+
+@keyframes color-shift-blue {
+    0%, 100% {background-color:blue;}
+	25% {background-color: red;}
+	75% {background-color: yellow;}
+}
+
+@-webkit-keyframes color-shift-blue {
+    0%, 100% {background-color:blue;}
+	25% {background-color: red;}
+	75% {background-color: yellow;}
+}
+
+
+@keyframes color-shift-purple {
+    0%, 100% {background-color:purple;}
+	25% {background-color: orange;}
+	75% {background-color: green;}
+}
+
+@-webkit-keyframes color-shift-purple {
+    0%, 100% {background-color:purple;}
+	25% {background-color: orange;}
+	75% {background-color: green;}
+}
+

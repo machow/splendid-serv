@@ -1,39 +1,26 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Splendid!!!!</title>
+  <link rel='stylesheet' href="/_/styles.css"/>
+  <!--<script src="http://code.jquery.com/jquery-1.10.2.js"></script> --!>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" >
+    <script type="text/javascript" src="/_/jquery-1.11.1.min.js"></script>
+  <script src='https://code.jquery.com/ui/1.11.0/jquery-ui.min.js'></script>
+  <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  <script src='/_/application.js'></script>
+</head>
 
-{% block content %}
-<p>Hello, {{user.nickname}}</p>
-
-<input type="text" id="line">
-
-<div id="splendid">
-</div>
-
-<script type=text/javascript>
-    $(document).ready(function(){
-        $("#line").on('keypress', function(event){
-            if ( event.which == 13 ) {
-                event.preventDefault();
-                var form = $(this);
-                game = sendCommand(form.val());
-
-                console.log(form.val());
-            }
-        });
-    });
-
-    function sendCommand(cmd){
-        $.ajax('/submit', 
-            {data: JSON.stringify(cmd), 
-            type:'POST', 
-            dataType:'json', 
-            contentType: 'application/json',
-            success: function(data){
-                $('#splendid').html("<pre>" + data['summary'] + "</pre>");
-                console.log(data);
-                }
-        })
-    }
-</script>
-
-{% endblock %}
-
+<body>
+  <div id=boardframe>
+    <h1 class='Center-Container announce Absolute-Center'>Welcome... to SPLENDOR!
+    <br>
+      <button id='enter'>Enter</button>
+    </h1>
+    <div id='spinwrap'class='spinwrap'>
+        <div id=pizzazz class='pizzazz spin'></div>
+    </div>
+  </div>
+</body>
+  

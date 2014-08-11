@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $( "#accordion" ).accordion();
+  });
+</script>
+
+<p>Profile for {{nickname}}</p>
+<div id="accordion">
+  {% for entry in active %}
+    <h3>{{entry.name}}</h3>
+    <a href="/game/{{entry.name}}" style='display:block;'>
+    <div>
+      <pre>{{entry.summary}}</pre>
+    </div>
+    </a>
+  {% endfor %}
+
+  {% for entry in not_active %}
+    <h3>{{entry.name}}</h3>
+    <div>
+      <pre>{{entry.summary}}</pre>
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

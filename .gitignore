@@ -2,4 +2,4 @@
 *.db
 .*
 !.gitignore
-templates/_/*
+tmp

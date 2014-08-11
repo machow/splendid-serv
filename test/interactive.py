@@ -1,7 +1,7 @@
 import os
 from config import basedir
 from app import app, db
-from app.models import User, Game
+from app.models import User, Match
 
 app.config['TESTING'] = True
 app.config['CSRF_ENABLED'] = False
@@ -11,5 +11,5 @@ app =  app.test_client()
 db.create_all()
 
 u = User(nickname='joe', email='joe@gmail.com')
-g1 = Game(name='coolgame111') 
+g1 = Match(name='coolgame111') 
 

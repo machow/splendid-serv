@@ -1,0 +1,24 @@
+    <header>Header</header>
+    <section>Login
+      <form id='loginform' class='pninputform center'>
+       <h2 class='pninputform center'>Input player names</h2>
+       <input id='gameName' name='game' placeholder='game name' class='pninput center' type='text' required autofocus>
+       <input id='pn1' name='player1' class='pninput center' type='text' placeholder='player 1' required>
+       <input id='pn2' name='player2' class='pninput center' type='text' placeholder='player 2' >
+       <input id='pn3' name='player3' class='pninput center' type='text' placeholder='player 3' >
+       <input id='pn4' name='player4' class='pninput center' type='text' placeholder='player 4'>
+        <div>
+          <button type='submit' id='pnsubmit' form='loginform' formaction='/newgame'>Submit</button>
+        </div>
+      </form>
+            
+    </section>
+  
+    <script>
+      $.getJSON('/info',function(data){
+        console.log(data);
+        $('.pninput').autocomplete({
+          source : data['nicknames']
+        });
+      });
+    </script>
