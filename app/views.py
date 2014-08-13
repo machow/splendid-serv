@@ -25,7 +25,7 @@ def after_login(resp):
     user = User.query.filter_by(email = resp.email).first()
     if not user:
         # use nickname given in form, else openID nickname
-        nickname = session.get('nickname') or resp.nickname
+        nickname = session['nickname'] if 'nickname' in session else resp.nickname
         # worst case scenario, use email address, cropped at @
         if nickname is None or nickname == "":
             nickname = resp.email.split('@')[0]
@@ -54,6 +54,11 @@ def login():
     return render_template('login.html', 
                            form=form,
                            providers=OPENID_PROVIDERS)
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return 'you are now logged out'
 
 # Routes ----------------------------------------------------------------------
 from splendid.classes import MoveError
@@ -110,8 +115,8 @@ def newgame():
     """
     # PARSE FORM INPUTS
     args = request.form or request.args
-
-    name = args.get('game') or 'default' #TODO make default name
+    suggested_name = args.get('game') or 'default' #TODO make default name
+    name = Match.make_unique_gamename(suggested_name)
     players = [player for k, player in args.items() if 'player' in k and player]
     add_gems = args.get('add_gems') or ""
     # MAKE SURE PLAYERS EXIST
