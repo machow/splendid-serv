@@ -1,8 +1,8 @@
 from flask import render_template, flash, redirect, session, url_for, request, g, jsonify, current_app
 from flask.ext.login import login_user,  current_user, login_required, logout_user
-from app import app, db, lm, oid
+from app import app, db, lm, oid, cache
 from forms import LoginForm
-from models import User, Match
+from models import User, Match, MutableGame
 from config import OPENID_PROVIDERS, savedir
 import json
 import pickle
@@ -56,25 +56,13 @@ def login():
                            providers=OPENID_PROVIDERS)
 
 # Routes ----------------------------------------------------------------------
-from splendid.classes import Game
 from splendid.classes import MoveError
 
-# at some point I should replace this with a proper cache
-CRNT_GAMES = {}
-def load_games(crnt_games):
-    matches = [m.name for m in Match.query.filter_by(is_active = True).all()]
-    # load matches that are active but are not in dictionary
-    for m in matches:
-        if m not in crnt_games:
-            print 'loading ' + m
-            CRNT_GAMES[m] = Game.load(savedir + '/' + m)
-    # remove matches that are no longer active
-    for key in CRNT_GAMES.keys():
-        if key not in matches: 
-            print 'removing ' + key
-            del CRNT_GAMES[key]
+def get_game(game_name):
+    m = Match.query.filter_by(name=game_name).first()
+    return m
 
-load_games(CRNT_GAMES)
+# at some point I should replace this with a proper cache
 
 @app.route('/')
 def index():
@@ -99,19 +87,13 @@ def profile(nickname):
 @app.route('/game', methods=['GET', 'POST'])
 @app.route('/game/<game_name>', methods=['GET', 'POST'])
 def game(game_name=''):
-    load_games(CRNT_GAMES)
-    if game_name: game = CRNT_GAMES[game_name]
-    return render_template('game.html', CRNT_GAMES = CRNT_GAMES, 
-                                         game_name = game_name,
+    return render_template('game.html', game_name = game_name,
                                          user = g.user)
 
 @app.route('/game2/<game_name>', methods=['GET', 'POST'])
 @login_required
 def game2(game_name=''):
-    load_games(CRNT_GAMES)
-    if game_name: game = CRNT_GAMES[game_name]
-    return render_template('game2.html', CRNT_GAMES = CRNT_GAMES, 
-                                         game_name = game_name,
+    return render_template('game2.html', game_name = game_name,
                                          user = g.user)
 
 @app.route('/newgame', methods=['GET', 'POST'])
@@ -129,30 +111,31 @@ def newgame():
     # PARSE FORM INPUTS
     args = request.form or request.args
 
-    name = args.get('game') or 'default'
+    name = args.get('game') or 'default' #TODO make default name
     players = [player for k, player in args.items() if 'player' in k and player]
     add_gems = args.get('add_gems') or ""
     # MAKE SURE PLAYERS EXIST
     users = []
     for pname in players:
         u = User.query.filter_by(nickname=pname).first()
-        if not u: raise BaseException("invalid player name, %s"%pname)
+        if not u: return "invalid player name, %s"%pname  #TODO better error handling
         else: users.append(u)
-
-    if name not in CRNT_GAMES:
+    # Get ongoing match names
+    active_matches = [m.name for m in Match.query.filter_by(is_active=True)]
+    if name not in active_matches:
         print players
         print type(players)
         # create game
-        G = pickle.load(open('game_default.pickle', 'rb'))
+        args = pickle.load(open('game_args.pickle', 'rb'))
+        G = MutableGame(*args)
         G.start(players, add_gems)
         # create db entry
-        m = Match(name=name, is_active=True, creator=g.user.id)
+        m = Match(name=name, is_active=True, creator=g.user.id, game=G, summary=str(G))
         m.players.extend(users)
         db.session.add(m)
         db.session.commit()
         # save initial copy of game and add to game dict
-        G.save(savedir + '/' + name)
-        CRNT_GAMES[name] = G
+        #G.save(savedir + '/' + name)
 
     return redirect('/game/%s'%name)
 
@@ -203,7 +186,12 @@ def submit():
     game_name = request.json.get('game')
     commands  = request.json.get('commands').split(" ")
 
-    G = CRNT_GAMES.get(game_name)
+    #G = CRNT_GAMES.get(game_name)
+    m = get_game(game_name)
+    print '====================='
+    print 'object m id: ', id(m)
+    print '====================='
+    G = m.game
     if G: 
         print "game exists"
         print G._players
@@ -218,22 +206,21 @@ def submit():
 
     try: 
         # Run player move -----------------------------------------------------
-        if g.user.nickname != G.crnt_player.name and g.user.nickname != 'plasticandglass': #TODO remove plasticandglass 
-            raise MoveError(110, text='it is the turn of %s'%G.crnt_player.name)
         cmd = commands[0]
         line = " ".join(commands[1:])
-        G(cmd, line)
+        G(cmd, line, g.user.nickname)
         G.save(savedir + '/' + game_name)
 
         # Post move wrap-up ---------------------------------------------------
-        m = Match.query.filter_by(name = game_name).first()
         # End game if winner
         if G.winner:
             m.is_active = False
         # Update match summary text
         m.summary = str(G)
+        m.game = G
         db.session.add(m)
-        db.session.commit()
+        if G.winner or G.crnt_player == G._players[0]:   #only update at beginning of cycle
+            db.session.commit()
         # Output JSON game data
         outputs = G.output()
         return jsonify(outputs)
@@ -254,3 +241,4 @@ def delete_it():
     else:
         print "could not delete, put more informative message here"
     return jsonify({'game': game_name})
+

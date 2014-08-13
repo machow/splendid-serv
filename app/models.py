@@ -1,7 +1,39 @@
+from sqlalchemy.ext.mutable import Mutable
 from app import db
 ROLE_USER = 0
 ROLE_ADMIN = 1
 
+# Class to track changes in Game for db ---------------------------------------
+from splendid.classes import Game
+class MutableGame(Mutable, Game, object):
+    def __init__(self, *args, **kwargs):
+        Mutable.__init__(self)
+        Game.__init__(self, *args, **kwargs)    
+
+    def __call__(self, *args, **kwargs):
+        Game.__call__(self, *args, **kwargs)
+        self.changed()
+        
+    @classmethod
+    def coerce(cls, key, value):
+        if not isinstance(value, MutableGame):
+            if isinstance(value, Game):
+                return MutableGame(value)
+        else: return value
+
+    def __getstate__(self): 
+        d = self.__dict__.copy()
+        d.pop('_parents', None)
+        return d
+
+    def __setstate__(self, state):
+        self.__dict__ = state
+
+    def __setattr__(self, name, value):
+        object.__setattr__(self, name, value)
+        self.changed()
+
+# Database models -------------------------------------------------------------
 from datetime import datetime
 association = db.Table('association',
         db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
@@ -52,7 +84,5 @@ class Match(db.Model):
     is_active = db.Column(db.Boolean, unique=False, default=True)
     creator = db.Column(db.Integer, db.ForeignKey('user.id'))
     summary = db.Column(db.Text)
-
-    def add_user(self, user):
-        self.players.append(user)
-        return self
+    #game = db.deferred(db.Column(db.PickleType))
+    game = db.Column(MutableGame.as_mutable(db.PickleType))

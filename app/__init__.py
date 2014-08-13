@@ -20,4 +20,8 @@ lm.login_view = 'login'
 
 oid = OpenID(app, os.path.join(basedir, 'tmp'))
 
+# Cache ---------------------------------------------
+from flask.ext.cache import Cache
+cache = Cache(app,config={'CACHE_TYPE': 'simple'})
+
 from app import models, views
