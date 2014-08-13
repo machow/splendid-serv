@@ -86,3 +86,12 @@ class Match(db.Model):
     summary = db.Column(db.Text)
     #game = db.deferred(db.Column(db.PickleType))
     game = db.Column(MutableGame.as_mutable(db.PickleType))
+
+    @staticmethod
+    def make_unique_gamename(gamename):
+        new_gamename = gamename
+        version = 2
+        while Match.query.filter_by(name=new_gamename).first() is not None:
+            new_gamename = gamename + str(version)
+            version += 1
+        return new_gamename
