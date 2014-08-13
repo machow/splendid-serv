@@ -28,10 +28,17 @@ def login(provider_name):
         if result.user:
             result.user.update()
             #name, id, email
+            print result.user.email
+            print 'USER DICT'
+            print result.user.__dict__
             if result.user.email is None or result.user.email == "":
+                print 'no email'
+                print result
+                print result.__dict__
                 flash('invalid login, please try again')
-                return redirect(url_for('login'))
+                return redirect('/')
             #check if user in db
+        
             user = User.query.filter_by(email = result.user.email).first()
             if not user:
                 # use nickname given in form, else openID nickname
@@ -47,7 +54,7 @@ def login(provider_name):
             #Login
             remember_me = session['remember_me'] if 'remember_me' in session else False
             login_user(user, remember_me)
-            return redirect(request.args.get('next') or 'index')
+            return redirect(request.args.get('next') or '/')
     return response
     
 #@app.route('/login', methods=["GET", "POST"])
