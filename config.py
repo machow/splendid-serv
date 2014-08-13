@@ -3,10 +3,10 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 savedir = os.path.join(basedir, 'saved')
 
-if os.environ.get('DATABASE_URL') is None:
+if os.environ.get('HEROKU_POSTGRESQL_ORANGE_URL') is None:
     SQLALCHEMY_DATABASE_URI = 'mysql://machow@localhost/foo'#'sqlite:///' + os.path.join(basedir, 'app.db')
 else:
-    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+    SQLALCHEMY_DATABASE_URI = os.environ['HEROKU_POSTGRESQL_ORANGE_URL']
 
 #SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
