@@ -15,6 +15,18 @@ DEBUG = True
 CSRF_ENABLED = True
 SECRET_KEY = 'MASTEROFSECRETZ'
 
+from authomatic.providers import oauth2, oauth1, openid
+import authomatic
+LOGINS = {
+        'google': {
+            'class_': oauth2.Google,
+            'consumer_key': '538317491200-tfrhfi6u5k7mi2uil4afkm1j83mou7so.apps.googleusercontent.com',
+            'consumer_secret': '407DcNKLLCLOk3hof4NxLgGG',
+            'id': authomatic.provider_id(),
+            'scope': oauth2.Google.user_info_scope
+        }
+    }
+
 OPENID_PROVIDERS = [
     { 'name': 'Google', 'url': 'https://www.google.com/accounts/o8/id' },
     { 'name': 'Yahoo', 'url': 'https://me.yahoo.com' },

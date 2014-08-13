@@ -1,12 +1,15 @@
-from flask import render_template, flash, redirect, session, url_for, request, g, jsonify, current_app
+from flask import render_template, flash, redirect, session, url_for, request, g, jsonify, make_response
 from flask.ext.login import login_user,  current_user, login_required, logout_user
-from app import app, db, lm, oid, cache
+from app import app, db, lm, cache#, googlelogin
 from forms import LoginForm
 from models import User, Match, MutableGame
-from config import OPENID_PROVIDERS, savedir
+from config import OPENID_PROVIDERS, savedir, LOGINS, SECRET_KEY
+from authomatic.adapters import WerkzeugAdapter
+from authomatic import Authomatic
 import json
 import pickle
 
+authomatic = Authomatic(LOGINS, SECRET_KEY, report_errors=True)
 
 @app.before_request
 def before_request():
@@ -16,44 +19,51 @@ def before_request():
 def load_user(id):
     return User.query.get(int(id))
 
-@oid.after_login
-def after_login(resp):
-    if resp.email is None or resp.email == "":
-        flash('invalid login, please try again')
-        return redirect(url_for('login'))
-    #check if user in db
-    user = User.query.filter_by(email = resp.email).first()
-    if not user:
-        # use nickname given in form, else openID nickname
-        nickname = session['nickname'] if 'nickname' in session else resp.nickname
-        # worst case scenario, use email address, cropped at @
-        if nickname is None or nickname == "":
-            nickname = resp.email.split('@')[0]
-        nickname = User.make_unique_nickname(nickname)
-        print nickname
-        user = User(nickname = nickname, email = resp.email)
-        db.session.add(user)
-        db.session.commit()
-    #Login
-    remember_me = session['remember_me'] if 'remember_me' in session else False
-    login_user(user, remember_me)
-    return redirect(request.args.get('next') or 'index')
+@app.route('/login/<provider_name>', methods=['GET', 'POST'])
+def login(provider_name):
+    response = make_response()
+    result = authomatic.login(WerkzeugAdapter(request, response), provider_name)
+    print result == None
+    if result:
+        if result.user:
+            result.user.update()
+            #name, id, email
+            if result.user.email is None or result.user.email == "":
+                flash('invalid login, please try again')
+                return redirect(url_for('login'))
+            #check if user in db
+            user = User.query.filter_by(email = result.user.email).first()
+            if not user:
+                # use nickname given in form, else openID nickname
+                #nickname = userinfo['nickname'] if 'nickname' in session else resp.nickname
+                # worst case scenario, use email address, cropped at @
+                #if nickname is None or nickname == "":
+                nickname = result.user.email.split('@')[0]
+                nickname = User.make_unique_nickname(nickname)
+                print nickname
+                user = User(nickname = nickname, email = result.user.email)
+                db.session.add(user)
+                db.session.commit()
+            #Login
+            remember_me = session['remember_me'] if 'remember_me' in session else False
+            login_user(user, remember_me)
+            return redirect(request.args.get('next') or 'index')
+    return response
     
-@app.route('/login', methods=["GET", "POST"])
-@oid.loginhandler
-def login():
-    if g.user is not None and g.user.is_authenticated():     # user validation
-        return redirect(url_for('index'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        print 'validated'
-        print form.openid.data
-        session['remember_me'] = form.remember_me.data
-        return oid.try_login(form.openid.data, ['email', 'nickname'])
-    print 'not validated'
-    return render_template('login.html', 
-                           form=form,
-                           providers=OPENID_PROVIDERS)
+#@app.route('/login', methods=["GET", "POST"])
+#def login():
+#    if g.user is not None and g.user.is_authenticated():     # user validation
+#        return redirect(url_for('index'))
+#    form = LoginForm()
+#    if form.validate_on_submit():
+#        print 'validated'
+#        print form.openid.data
+#        session['remember_me'] = form.remember_me.data
+#        #return oid.try_login(form.openid.data, ['email', 'nickname'])
+#    print 'not validated'
+#    return render_template('login.html', 
+#                           form=form,
+#                           providers=OPENID_PROVIDERS)
 
 @app.route('/logout')
 def logout():
