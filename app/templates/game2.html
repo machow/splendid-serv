@@ -41,6 +41,7 @@ var json_str = '{"winner": [], "summary": "\\n\\nTURN: player1     | MOVE: [\'do
 <script type=text/javascript>
     $(document).ready(function(){
         var game_name = $('#game_name').html();
+        sendCommand("", game_name);
         $("#line").on('keypress', function(event){
             if ( event.which == 13 ) {
                 event.preventDefault();

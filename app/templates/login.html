@@ -23,7 +23,6 @@ function set_openid(openid, pr)
   |{% for pr in providers%}
   <a href="javascript:set_openid('{{pr.url}}', '{{pr.name}}');">{{pr.name}}</a> |
   {% endfor %}
-  <p>nickname: {{form.nickname()}}</p>
 
   <p>Remember Me: {{form.remember_me()}}</p>
   <input type="submit" value="Blast off!">
