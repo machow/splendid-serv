@@ -43,8 +43,6 @@ $(document).ready(function(){
     });
 
 
-
-
 	// $('.lands-container').on('click', function(){
 	// 	var pLands = $(this).find('.p-lands')
 	// 	pLands.toggle();
@@ -60,23 +58,5 @@ $(document).ready(function(){
 		
 		
 	// });
-	
-	//move h3 nobles text into DIV
-	
-	var noblesTitle = $('#board').last('h3').text();
-	$('#board').find('h3').last().remove();
-		
-	//move nobles div out of board div (needs persistant visible)
-	//find div and copy
-	
-	var noblesDiv = $('#board').find('div.nobles').clone();
-	$('#board').find('div.nobles').detach();
-	
-	//put noblesDiv at end of boardwrapper
-	
-	$('#board-wrapper').append(noblesDiv);
-	
-	
-	
 	
 });

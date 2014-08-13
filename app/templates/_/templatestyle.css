@@ -280,16 +280,10 @@ li.gems-container, li.lands-container{
 	position:relative;
 	height: 100%;
 	border: 3px solid black;
+	overflow-x: hide;
 	overflow-y: scroll;
-}
-
-.nobles {
-	position:absolute;
-	background-color:grey;
-	bottom: 0;
-	height: 10%;
-	width:	100%;
-	
+  /* COMMENTING OUT NOBLES DIV */
+	/*height: 79.5%;*/
 }
 
 #splendid{
@@ -331,13 +325,42 @@ header{
 #board-wrapper{
 	display:inline-block;
 	width: 64%;
-	overflow:auto;
+	overflow: hide;
 	position: absolute;
 	height: 87%;
 	
 	top: 10%;
 	left: 21%;
 }
+
+#tier-1{
+	
+	background-color:lightgreen;
+}
+
+#tier-2{
+	background-color: lightyellow;
+}
+
+#tier-3{
+	background-color: lightblue;
+	
+}
+
+/* REMOVED NOBLES DIV (FOOTER)
+.b-nobles{
+	position:absolute;
+	bottom: 0;
+	left: 0;
+	height: 20%;
+	width: 100%;
+	background-color: rgb(196, 196, 196);
+	border: 2px solid black;
+	overflow-x: scroll;
+	box-sizing: border-box;
+	
+}
+*/
 
 #button{
 	position: absolute;

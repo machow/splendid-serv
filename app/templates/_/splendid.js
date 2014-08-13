@@ -14,7 +14,7 @@ function sendCommand(cmd, game_name, simple){
         success: function(data){
             //$('#splendid').html("<pre>" + data['summary'] + "</pre>");
             console.log(data)
-            if (data['error_code']) {alert(data['value']);}
+            if (data['error_code']) {alert(data['text']);}
             else {
                 Command.reset();
                 if (!simple) update_board(data); //update_board(data);
@@ -123,10 +123,21 @@ function update_board(data){
         noble_out = board.find('.nobles');
         gen_land_cards(data['nobles'], landtemp, noble_out, 'noble-');
         boardDiv.append(board)
-
-
         
-        
+        /* COMMENTED OUT PUTTING NOBLES INTO FOOTER
+         *
+        //move h3 nobles text into DIV
+        var noblesTitle = board.find('h3').last().clone();
+        $('#board').find('h3').last().remove();
+        //move nobles div out of board div (needs persistant visible)
+        //find div and copy
+        var noblesDiv = board.find('div.nobles').clone();
+        $('#board').find('div.nobles').detach();
+        //put noblesDiv at end of boardwrapper
+        $('#board-wrapper').append(noblesDiv);
+        //replace nobles h3
+        $('#board-wrapper').find('div.nobles').prepend(noblesTitle);
+        */
     });
 }
 
