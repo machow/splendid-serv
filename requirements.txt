@@ -19,6 +19,7 @@ ipdb==0.8
 ipython==2.1.0
 itsdangerous==0.23
 pbr==0.5.23
+psycopg2==2.5.3
 python-openid==2.2.5
 -e git+https://github.com/machow/splendid.git@480953cecba7c389762040775aeceb97142e3e89#egg=splendid-master
 sqlalchemy-migrate==0.8.2
