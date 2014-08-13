@@ -33,9 +33,15 @@ $(document).ready(function(){
 
     $(document).on('click', '.b-lands .c-land', function(){
         id = String(this.id).replace('land-', "");
-        console.log('land clicked');
-        console.log('previous id: ' + Command.landCard);
-        console.log('new id: ' + id);
+        // update Command object
+        Command.addLand(id);
+        Command.updateOptions();
+        Command.updateSelected();
+    });
+
+    $(document).on('click', '.b-nobles .c-land', function(){
+        id = String(this.id).replace('noble-', "");
+        console.log(id);
         // update Command object
         Command.addLand(id);
         Command.updateOptions();

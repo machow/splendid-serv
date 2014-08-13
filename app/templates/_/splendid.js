@@ -122,7 +122,17 @@ function update_board(data){
         }
         noble_out = board.find('.nobles');
         gen_land_cards(data['nobles'], landtemp, noble_out, 'noble-');
-        boardDiv.append(board)
+        boardDiv.append(board);
+        // reset Command, so previous selections are removed
+        Command.reset();
+        // Indicate move type near command bar
+        if (data['crnt_move'][0] == 'do_noble') {
+            $('#move-type').html('Noble Move');
+            Command.nobleTurn = true;
+        }
+        else $('#move-type').html('Regular Move');
+        Command.updateOptions();
+        Command.updateSelected();
         
         /* COMMENTED OUT PUTTING NOBLES INTO FOOTER
          *
@@ -151,12 +161,14 @@ Command = {
         for (var ii=0; ii < gemtypes.length; ii++) this.gems[gemtypes[ii]] = 0;
         this.landCard = "";
         this.gemSource = "";
+        this.nobleTurn = false;
     },
     options: function(){
         var todo = {};
-        todo['buy'] = (this.landCard != "") & (this.gemSource == 'wallet');
+        todo['buy'] = (this.landCard != "");
         todo['reserve'] = this.landCard != "" & this.ttlgems == 0;
         todo['draw'] = this.landCard == "" & this.ttlgems > 1;
+        todo['noble'] = this.nobleTurn;
         return todo
     },
     addGem: function(gem, source){
