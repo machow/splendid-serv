@@ -20,7 +20,7 @@ def load_user(id):
     return User.query.get(int(id))
 
 @app.route('/login/<provider_name>', methods=['GET', 'POST'])
-def login(provider_name):
+def login_page(provider_name):
     response = make_response()
     result = authomatic.login(WerkzeugAdapter(request, response), provider_name)
     print result == None
@@ -36,7 +36,7 @@ def login(provider_name):
                 print result
                 print result.__dict__
                 flash('invalid login, please try again')
-                return redirect('/')
+                return redirect('/login')
             #check if user in db
         
             user = User.query.filter_by(email = result.user.email).first()
@@ -47,7 +47,6 @@ def login(provider_name):
                 #if nickname is None or nickname == "":
                 nickname = result.user.email.split('@')[0]
                 nickname = User.make_unique_nickname(nickname)
-                print nickname
                 user = User(nickname = nickname, email = result.user.email)
                 db.session.add(user)
                 db.session.commit()
@@ -57,6 +56,10 @@ def login(provider_name):
             return redirect(request.args.get('next') or '/')
     return response
     
+@app.route('/login')
+def login():
+    return "you must <a href='/login/google'>login using google</a> to continue"
+
 #@app.route('/login', methods=["GET", "POST"])
 #def login():
 #    if g.user is not None and g.user.is_authenticated():     # user validation
