@@ -456,6 +456,10 @@ transform: translate(3%, 3%);
   border-color:blue;
 }
 
+#myturn{
+  border-color: yellow;
+}
+
 .float-left{
   float: left;
 }
