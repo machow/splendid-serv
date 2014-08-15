@@ -234,7 +234,7 @@ def submit():
         cmd = commands[0]
         line = " ".join(commands[1:])
         G(cmd, line, g.user.nickname)
-        G.save(savedir + '/' + game_name)
+        #G.save(savedir + '/' + game_name)
 
         # Post move wrap-up ---------------------------------------------------
         # End game if winner
@@ -244,8 +244,7 @@ def submit():
         m.summary = str(G)
         m.game = G
         db.session.add(m)
-        if G.winner or G.crnt_player == G._players[0]:   #only update at beginning of cycle
-            db.session.commit()
+        db.session.commit()
         # Output JSON game data
         outputs = G.output()
         return jsonify(outputs)
