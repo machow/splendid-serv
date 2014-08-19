@@ -24,6 +24,6 @@ pbr==0.5.23
 psycopg2==2.5.3
 python-openid==2.2.5
 requests==0.14.2
--e git+https://github.com/machow/splendid.git@9c4c62dec7fcf52ab9da57344d3fc1f47b81d2f5#egg=splendid
+-e git+https://github.com/machow/splendid.git@ace0d598325d1375807bff8b5d249c836d199e73#egg=splendid-master
 sqlalchemy-migrate==0.8.2
 wsgiref==0.1.2
