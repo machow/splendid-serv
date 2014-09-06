@@ -128,10 +128,13 @@ ul.li-coloring li:nth-of-type(2n) {
 .vertical-center{
 	display: block;
 	position:absolute;
-	/* margin: auto; */
+	height: 1em;
+	width: 100%;
 	text-align:center;
 	
-	top: 1;
+	vertical-align: middle;
+	margin: auto;
+	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
@@ -154,6 +157,8 @@ ul.p-gems li.gem-A, .b-gems .gem-A{
 	background-size: auto 100%;
 	color: white;
 	background-color: black;
+	vertical-align: middle;
+	align-content: center;
 }
 
 ul.p-gems li.gem-b, .b-gems .gem-b{
