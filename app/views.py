@@ -84,8 +84,8 @@ def logout():
 from splendid.classes import MoveError
 
 def get_game(game_name):
-    m = Match.query.filter_by(name=game_name).first()
-    return m
+    #m = Match.query.filter_by(name=game_name).first()
+    return None
 
 # at some point I should replace this with a proper cache
 
