@@ -28,12 +28,13 @@ git checkout -b NEWBRANCHNAME
 # Make changes on branch..
 #
 
+# Update test server with changes
+git push staging NEWBRANCHNAME:master
+
 # Update staging. May need to check for updates.
 git checkout staging
 git merge NEWBRANCHNAME
 
-# Update test server with changes
-git push staging staging:master
 # Once you're confident changes are working, push to github
 git push origin staging
 ```
