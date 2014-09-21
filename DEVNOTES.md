@@ -34,6 +34,7 @@ git push staging NEWBRANCHNAME:master
 # Update staging. May need to check for updates.
 git checkout staging
 git merge NEWBRANCHNAME
+git branch -d NEWBRANCHNAME
 
 # Once you're confident changes are working, push to github
 git push origin staging
