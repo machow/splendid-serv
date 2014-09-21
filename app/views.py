@@ -116,7 +116,7 @@ def game(game_name=''):
                                          user = g.user)
 
 @app.route('/game2/<game_name>', methods=['GET', 'POST'])
-@login_required
+#@login_required
 def game2(game_name=''):
     return render_template('game2.html', game_name = game_name,
                                          user = g.user)
