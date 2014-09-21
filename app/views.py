@@ -199,7 +199,7 @@ def test():
 
 
 @app.route('/submit', methods=['GET', 'POST'])
-@login_required
+#@login_required
 def submit():
     """Submit game turn.
 
@@ -216,11 +216,19 @@ def submit():
     print '====================='
     print 'object m id: ', id(m)
     print '====================='
-    G = m.game
+    G = getattr(m, 'game', None)
     if G: 
         print "game exists"
         print G._players
-    else: return render_template('404.html')
+    else: 
+        #return render_template('404.html')
+        args = pickle.load(open('game_args.pickle', 'rb'))
+        G = MutableGame(*args)
+        G.start(['test1', 'test2'], "")
+        G('draw', 'WW')
+        G('draw', 'BB')
+        G('draw', 'Brg')
+        print "made new test game"
 
     if not commands[0]:
         return jsonify(G.output())
