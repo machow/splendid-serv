@@ -1,0 +1,6 @@
+<h3>Gems</h3>
+<ul class="p-gems p-wallet">
+  <li ng-class="'gem-' + gemtype" ng-repeat="(gemtype, num) in player.gems">
+    <span class="vertical-center">{{ num }}</span>
+  </li>
+</ul>

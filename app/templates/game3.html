@@ -1,0 +1,73 @@
+<html ng-app="splendid">
+<head>
+  <title>Splangular</title>
+	<script type="text/javascript" src="_/jquery-1.11.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+  <script type="text/javascript" src="_/test_board2.json"></script>
+  <script type="text/javascript" src="_/game3.js"></script>
+  <link rel='stylesheet' href='_/templatestyle.css' />
+</head>
+<body>
+<div id="renameme" ng-controller="boardController as board">  
+  <div class="player" ng-repeat="player in board.state.players">
+    <ul class="li-coloring">
+      <!-- NAME -->
+      <li>
+        <span>name: </span><span class="p-name">{{ player.name }}</span>
+      </li>
+      <!-- POINTS -->
+      <li>
+        <p class="p-points">{{ player.points }}</p>
+      </li>
+      <!-- GEMS -->
+      <li class="gems-container" ng-include="'_/views/gems-container.html'">
+      </li>
+      <li class="gems-container" ng-include"'_/views/gems-container.html'">
+        <h3>Land bonus</h3>
+        <ul class="p-gems p-land_bonus"></ul>
+      </li>
+      <!-- Lands Owned -->
+      <li class='lands-container'>
+        <h3>Lands</h3>
+        <div class="lands p-lands" ng-repeat="land in player.lands">
+          <div class='c-land' ng-include="'_/views/lands-card.html'">
+          </div>
+        </div>
+      </li>
+      <li> <div class="nobles p-nobles"></div></li>
+      <li><div class="p-reserve"></div></li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- 
+Templates 
+-->
+
+<!-- Gems Container -->
+<script type="text/ng-template" id="_/views/gems-container.html">
+  <h3>Gems</h3>
+  <ul class="p-gems p-wallet">
+    <li ng-class="'gem-' + gemtype" ng-repeat="(gemtype, num) in player.gems">
+      <span class="vertical-center">{{ num }}</span>
+    </li>
+  </ul>
+</script>
+
+<!-- Lands Container -->
+<script type="text/ng-template" id="_/views/lands-card.html">
+  <div class='c-header'>
+    <span>PV: </span><span class='c-pv'>{{ land.pv }}</span><br>
+    <span>Type: </span><span class='c-type'> {{ land.type }} </span>
+  </div>
+  <div class='c-body'></div>
+  <div class='c-footer'>
+    <ul class="p-gems cost"></ul>
+    <span>ID: </span><span class='c-id'></span>
+  </div>
+
+</script>
+
+</body>
+</html>
